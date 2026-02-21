@@ -1,0 +1,37 @@
+import React from 'react';
+
+const TopBar = () => {
+    return (
+         <div className="bg-gray-200 py-2 w-full mx-auto">
+      <div className="max-w-6xl mx-auto flex justify-end items-center gap-6 text-sm font-medium">
+        
+        {/* Bangladesh Flag Dot */}
+        <div className="w-4 h-4 rounded-full bg-green-600 relative">
+          <div className="w-2 h-2 bg-red-600 rounded-full absolute top-1 left-1"></div>
+        </div>
+
+        <span className='text-black'>|</span>
+
+        <button className="hover:text-green-600 transition text-black">
+          EN
+        </button>
+
+        <span className='text-black'>|</span>
+
+        <button className="hover:text-green-600 transition text-black">
+          BDT
+        </button>
+
+        <span className='text-black'>Need help?</span>
+
+        <button className="hover:text-green-600 transition text-black">Sign in</button>
+
+      </div>
+     
+        
+      
+    </div>
+    );
+};
+
+export default TopBar;
