@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           <Navbar />
         </header>
 
-        <main  className="px-5 py-2 md:w-11/12 mx-auto">
+        <main  className="px-5 py-2 md:w-11/12 mx-auto min-h-[calc(100vh-330px)]">
           {children}
         </main>
 

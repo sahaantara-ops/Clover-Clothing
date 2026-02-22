@@ -24,7 +24,7 @@ const TopBar = () => {
 
         <span className='text-black'>Need help?</span>
 
-        <button className="hover:text-green-600 transition text-black">Sign in</button>
+        <button className="hover:text-green-600 transition text-black">My Account</button>
 
       </div>
      

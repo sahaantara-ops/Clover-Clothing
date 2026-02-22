@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import { IoChevronDownCircleSharp } from "react-icons/io5";
 
 const FAQItem = ({ question, answer }) => {
   const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ const FAQItem = ({ question, answer }) => {
       >
         {question}
         <span className={`transform transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>
-          ▼
+          <IoChevronDownCircleSharp />
         </span>
       </button>
       {open && <p className="mt-2 text-gray-600">{answer}</p>}
@@ -60,7 +61,7 @@ const FAQPage = () => {
       </div>
 
       {/* Form to submit new question */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-gray-300 p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Have a question?</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -72,7 +73,7 @@ const FAQPage = () => {
           />
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+            className="bg-mauve-600 text-white px-4 py-2 rounded-md hover:bg-mauve-700 transition"
           >
             Submit Question
           </button>
