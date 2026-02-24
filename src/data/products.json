@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "name": "Classic White Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,white",
+    "cottonType": "Pure Cotton",
+    "brand": "Deshi Wear",
+    "size": "M",
+    "color": "White",
+    "price": 1499,
+    "sold": 120
+  },
+  {
+    "id": 2,
+    "name": "Royal Black Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,black",
+    "cottonType": "Premium Cotton",
+    "brand": "Urban Deshi",
+    "size": "L",
+    "color": "Black",
+    "price": 1799,
+    "sold": 95
+  },
+  {
+    "id": 3,
+    "name": "Sky Blue Casual Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,blue",
+    "cottonType": "Soft Cotton",
+    "brand": "Clover Clothing",
+    "size": "S",
+    "color": "Blue",
+    "price": 1399,
+    "sold": 80
+  },
+  {
+    "id": 4,
+    "name": "Elegant Maroon Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,maroon",
+    "cottonType": "Pure Cotton",
+    "brand": "Deshi Wear",
+    "size": "XL",
+    "color": "Maroon",
+    "price": 1699,
+    "sold": 110
+  },
+  {
+    "id": 5,
+    "name": "Olive Green Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,green",
+    "cottonType": "Premium Cotton",
+    "brand": "Ethnic Vibe",
+    "size": "M",
+    "color": "Green",
+    "price": 1599,
+    "sold": 70
+  },
+  {
+    "id": 6,
+    "name": "Golden Festive Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,golden",
+    "cottonType": "Silk Cotton",
+    "brand": "Royal Attire",
+    "size": "L",
+    "color": "Golden",
+    "price": 1999,
+    "sold": 60
+  },
+  {
+    "id": 7,
+    "name": "Cream Traditional Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,cream",
+    "cottonType": "Pure Cotton",
+    "brand": "Deshi Wear",
+    "size": "M",
+    "color": "Cream",
+    "price": 1499,
+    "sold": 130
+  },
+  {
+    "id": 8,
+    "name": "Navy Blue Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,navy",
+    "cottonType": "Premium Cotton",
+    "brand": "Urban Deshi",
+    "size": "XL",
+    "color": "Navy Blue",
+    "price": 1799,
+    "sold": 85
+  },
+  {
+    "id": 9,
+    "name": "Rust Orange Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,orange",
+    "cottonType": "Soft Cotton",
+    "brand": "Clover Clothing",
+    "size": "S",
+    "color": "Orange",
+    "price": 1399,
+    "sold": 55
+  },
+  {
+    "id": 10,
+    "name": "Charcoal Grey Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,grey",
+    "cottonType": "Pure Cotton",
+    "brand": "Ethnic Vibe",
+    "size": "L",
+    "color": "Grey",
+    "price": 1599,
+    "sold": 92
+  },
+  {
+    "id": 11,
+    "name": "Pastel Pink Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,pink",
+    "cottonType": "Premium Cotton",
+    "brand": "Royal Attire",
+    "size": "M",
+    "color": "Pink",
+    "price": 1699,
+    "sold": 73
+  },
+  {
+    "id": 12,
+    "name": "Deep Purple Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,purple",
+    "cottonType": "Silk Cotton",
+    "brand": "Deshi Wear",
+    "size": "XL",
+    "color": "Purple",
+    "price": 1899,
+    "sold": 48
+  },
+  {
+    "id": 13,
+    "name": "Mustard Yellow Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,yellow",
+    "cottonType": "Soft Cotton",
+    "brand": "Urban Deshi",
+    "size": "L",
+    "color": "Yellow",
+    "price": 1499,
+    "sold": 66
+  },
+  {
+    "id": 14,
+    "name": "Teal Blue Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,teal",
+    "cottonType": "Pure Cotton",
+    "brand": "Clover Clothing",
+    "size": "M",
+    "color": "Teal",
+    "price": 1599,
+    "sold": 90
+  },
+  {
+    "id": 15,
+    "name": "Brown Casual Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,brown",
+    "cottonType": "Premium Cotton",
+    "brand": "Ethnic Vibe",
+    "size": "S",
+    "color": "Brown",
+    "price": 1399,
+    "sold": 40
+  },
+  {
+    "id": 16,
+    "name": "Wine Red Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,red",
+    "cottonType": "Silk Cotton",
+    "brand": "Royal Attire",
+    "size": "XL",
+    "color": "Red",
+    "price": 1999,
+    "sold": 58
+  },
+  {
+    "id": 17,
+    "name": "Light Grey Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,lightgrey",
+    "cottonType": "Soft Cotton",
+    "brand": "Deshi Wear",
+    "size": "M",
+    "color": "Light Grey",
+    "price": 1499,
+    "sold": 77
+  },
+  {
+    "id": 18,
+    "name": "Emerald Green Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,emerald",
+    "cottonType": "Premium Cotton",
+    "brand": "Urban Deshi",
+    "size": "L",
+    "color": "Emerald",
+    "price": 1799,
+    "sold": 69
+  },
+  {
+    "id": 19,
+    "name": "Off White Designer Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,offwhite",
+    "cottonType": "Silk Cotton",
+    "brand": "Clover Clothing",
+    "size": "XL",
+    "color": "Off White",
+    "price": 1899,
+    "sold": 52
+  },
+  {
+    "id": 20,
+    "name": "Midnight Blue Punjabi",
+    "image": "https://source.unsplash.com/600x800/?punjabi,kurta,midnightblue",
+    "cottonType": "Pure Cotton",
+    "brand": "Royal Attire",
+    "size": "M",
+    "color": "Midnight Blue",
+    "price": 1699,
+    "sold": 88
+  }
+]
