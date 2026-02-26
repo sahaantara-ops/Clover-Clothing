@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../Card/ProductCard";
 import ProductSkeleton from "../Skeleton/ProductSkeleton";
-import TopCategoriesSection from "../TopCategories/TopCategories";
 
-const Products = () => {
-  const [products, setProducts] = useState([]);   // ✅ MUST exist
-  const [showProducts, setShowProducts] = useState(false);
+
+const Products = ({ limit }) => {
+  const [products, setProducts] = useState([]);
+  const [showAll, setShowAll] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Products = () => {
       try {
         const res = await fetch("/api/products");
         const data = await res.json();
-        setProducts(data);        // ✅ sets products
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
@@ -26,28 +26,27 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  const firstFifteenProducts = products.slice(0, 15);  
-  const visibleProducts = showProducts
-    ? firstFifteenProducts
-    : firstFifteenProducts.slice(0, 8);
+  // Decide which products to show
+  let displayedProducts = products;
+  if (limit && !showAll) {
+    displayedProducts = products.slice(0, limit);
+  }
 
   return (
     <div>
-      <div className="w-full py-5">
-        <TopCategoriesSection />
-      </div>
+      
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {isLoading
-          ? Array(8)
+          ? Array(limit || 8)
               .fill(0)
               .map((_, index) => <ProductSkeleton key={index} />)
-          : visibleProducts.map((product) => (
+          : displayedProducts.map((product) => (
               <ProductCard
-                key={product._id}
+                key={product.id}
                 product={{
                   ...product,
-                  id: product._id,
+                  id: product.id,
                   image: product.image || "/placeholder.png",
                   name: product.name || "Unnamed Product",
                 }}
@@ -55,13 +54,14 @@ const Products = () => {
             ))}
       </div>
 
-      {!isLoading && firstFifteenProducts.length > 8 && (
+      {/* Show toggle only if limit is set */}
+      {!isLoading && limit && products.length > limit && (
         <div className="flex justify-center mt-6">
           <button
-            onClick={() => setShowProducts(!showProducts)}
+            onClick={() => setShowAll(!showAll)}
             className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
           >
-            {showProducts ? "Show Less" : "See More"}
+            {showAll ? "Show Less" : "See More"}
           </button>
         </div>
       )}
