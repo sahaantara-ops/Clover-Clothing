@@ -1,28 +1,41 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import products from "../../data/products.json";
+import { useEffect, useState } from "react";
 import ProductCard from "../Card/ProductCard";
 import ProductSkeleton from "../Skeleton/ProductSkeleton";
+import TopCategoriesSection from "../TopCategories/TopCategories";
 
 const Products = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);   // ✅ MUST exist
   const [showProducts, setShowProducts] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const firstFifteenProducts = products.slice(0, 15);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        setProducts(data);        // ✅ sets products
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const firstFifteenProducts = products.slice(0, 15);  
   const visibleProducts = showProducts
     ? firstFifteenProducts
     : firstFifteenProducts.slice(0, 8);
 
-  useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Products Page</h2>
+      <div className="w-full py-5">
+        <TopCategoriesSection />
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {isLoading
@@ -30,7 +43,15 @@ const Products = () => {
               .fill(0)
               .map((_, index) => <ProductSkeleton key={index} />)
           : visibleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product._id}
+                product={{
+                  ...product,
+                  id: product._id,
+                  image: product.image || "/placeholder.png",
+                  name: product.name || "Unnamed Product",
+                }}
+              />
             ))}
       </div>
 

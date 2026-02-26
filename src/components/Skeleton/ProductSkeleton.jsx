@@ -7,7 +7,7 @@ const ProductSkeleton = () => {
       <div className="space-y-2">
         <div className="skeleton h-4 w-3/4 bg-gray-300 rounded"></div>
         <div className="skeleton h-4 w-1/2 bg-gray-300 rounded"></div>
-        <div className="flex justify-between mt-4">
+         <div className="flex justify-between mt-4">
           <div className="skeleton h-4 w-16 bg-gray-300 rounded"></div>
           <div className="skeleton h-4 w-16 bg-gray-300 rounded"></div>
         </div>
