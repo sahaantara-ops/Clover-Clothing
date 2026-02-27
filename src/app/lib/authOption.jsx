@@ -10,7 +10,7 @@ export const authOptions = {
       password: { label: "Password", type: "password" }
     },
     async authorize(credentials, req) {
-     
+      console.log("Credentials received in authorize:", credentials);
       return null
     }
   })

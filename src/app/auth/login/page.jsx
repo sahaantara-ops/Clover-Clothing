@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,16 +11,26 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
 
     const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+     await signIn("credentials", {
+    redirect: false,  // avoid automatic redirect
+    email,
+    password,
+  });
 
     const res = await fetch("/api/auth/login", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: formData.get("email"),
-        password: formData.get("password"),
+        email,password
       }),
     });
+    console.log("email:", formData.get("email"), "password:", formData.get("password"));
 
     const data = await res.json();
     setLoading(false);

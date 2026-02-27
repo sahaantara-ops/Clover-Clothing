@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { postuser } from "@/Action/Server/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -11,24 +12,23 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-      }),
-    });
+    const payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
 
-    const data = await res.json();
+    const result = await postuser(payload);
+
     setLoading(false);
 
-    if (res.ok) {
-      router.push("/login");
+    if (result?.success) {
+      alert("Successful. Please login.");
+      router.push("/auth/login");
     } else {
-      alert(data.message);
+      alert("Registration failed or user already exists.");
     }
   };
 
@@ -39,14 +39,29 @@ export default function RegisterPage() {
       </h2>
 
       <form onSubmit={handleRegister} className="space-y-4">
-        <input name="name" type="text" placeholder="Full Name"
-          className="w-full border p-3 rounded-lg" required />
+        <input
+          name="name"
+          type="text"
+          placeholder="Full Name"
+          className="w-full border p-3 rounded-lg"
+          required
+        />
 
-        <input name="email" type="email" placeholder="Email"
-          className="w-full border p-3 rounded-lg" required />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          className="w-full border p-3 rounded-lg"
+          required
+        />
 
-        <input name="password" type="password" placeholder="Password"
-          className="w-full border p-3 rounded-lg" required />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          className="w-full border p-3 rounded-lg"
+          required
+        />
 
         <button
           disabled={loading}
