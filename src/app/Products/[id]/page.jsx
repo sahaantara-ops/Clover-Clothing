@@ -1,7 +1,83 @@
 import { getSingleProduct } from "@/Action/Server/Product";
+import CartButton from "@/components/Buttons/CartButton";
 import Image from "next/image";
 import React from "react";
 
+
+export async function generateMetadata({ params }) {
+  const { id } =await params;
+  const product = await getSingleProduct(id);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  const {
+    name,
+    price,
+    cottonType,
+    sold,
+    image,
+    discount = 0,
+  } = product;
+
+  const discountPrice = price - (price * discount) / 100;
+
+  const productUrl = `https://clover-clothing.vercel.app/products/${id}`;
+
+  const description = `${name} made with premium ${cottonType}. ${
+    discount > 0
+      ? `Now available for ৳${discountPrice.toFixed(0)} (${discount}% OFF).`
+      : `Available now for ৳${price}.`
+  } Sold: ${sold} pieces. Order now!`;
+
+  return {
+    title: `${name} | Your Store Name`,
+    description,
+    alternates: {
+      canonical: productUrl,
+    },
+
+    openGraph: {
+      type: "website",
+      url: productUrl,
+      title: name,
+      description,
+      siteName: "Your Store Name",
+      images: [
+        {
+          url: image || "https://i.ibb.co/60vvkRZ3/your-fallback.jpg",
+          width: 1200,
+          height: 1200,
+          alt: name,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: name,
+      description,
+      images: [
+        image || "https://i.ibb.co/60vvkRZ3/your-fallback.jpg",
+      ],
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        "max-image-preview": "large",
+      },
+    },
+  };
+}
 
 const ProductDetails = async ({ params }) => {
   const { id } = await params; // no need to await
@@ -95,9 +171,7 @@ const ProductDetails = async ({ params }) => {
 
           </div>
 
-          <button className="mt-6 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition duration-300 shadow-md">
-            Add to Cart
-          </button>
+          <CartButton product={product}></CartButton>
         </div>
       </div>
     </div>

@@ -32,7 +32,7 @@ const Brands = () => {
         {
   brandLogos.map((logo, index) => (
     <SwiperSlide key={index}>
-      <img src={logo} alt={`Brand ${index + 1}`} className='w-20 h-20 mt-10' />
+      <img src={logo} alt={`Brand ${index + 1}`} className='w-20 h-20' />
     </SwiperSlide>
   ))
 }

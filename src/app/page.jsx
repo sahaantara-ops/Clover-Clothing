@@ -10,15 +10,16 @@ export default function Home() {
       <section>
         <Banner></Banner>
       </section>
+       <section>
+        <Brands></Brands>
+      </section>
       <section>
       <div className="w-full py-5">
       <TopCategoriesSection />
       </div>
         <Products limit={8} />
       </section>
-      <section>
-        <Brands></Brands>
-      </section>
+     
     </div>
   );
 }

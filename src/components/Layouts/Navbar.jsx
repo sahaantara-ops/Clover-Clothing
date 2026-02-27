@@ -43,7 +43,7 @@ const Navbar = () => {
     <Link href={"/cart"} className='"btn btn-ghost"'>
     <IoMdCart />
     </Link>
-    <Link href={"/login"} className="btn btn-ghost">Login</Link>
+    <Link href={"/auth/login"} className="btn btn-ghost">Login</Link>
     
   </div>
 </div>
