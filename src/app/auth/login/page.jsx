@@ -1,45 +1,83 @@
 "use client";
-
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-  
+const searchParams = useSearchParams();
+const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-     await signIn("credentials", {
-    redirect: false,  // avoid automatic redirect
+  const formData = new FormData(e.target);
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const result = await signIn("credentials", {
+    redirect: false,
     email,
     password,
+    callbackUrl,
   });
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,password
-      }),
+  if (!result.ok) {
+    Swal.fire({
+      title: "Error! Email and password do not match",
+      width: 500,
+      padding: "3em",
+      color: "#716add",
+      background: "#fff",
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("/cat-space.gif")
+        left top
+        no-repeat
+      `
     });
-    console.log("email:", formData.get("email"), "password:", formData.get("password"));
-
-    const data = await res.json();
     setLoading(false);
+  } else {
+    Swal.fire({
+      title: "Success! You are successfully logged in",
+      width: 500,
+      padding: "3em",
+      color: "#716add",
+      background: "#fff",
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("/cat-space.gif")
+        left top
+        no-repeat
+      `
+    }).then(() => {
+      router.push(callbackUrl);
+    });
+  };
 
-    if (res.ok) {
-      router.push("/");
-    } else {
-      alert(data.message);
-    }
+
+    // const res = await fetch("/api/auth/login", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     email,password
+    //   }),
+    // });
+    // console.log("email:", formData.get("email"), "password:", formData.get("password"));
+
+    // const data = await res.json();
+    // setLoading(false);
+
+    // if (res.ok) {
+    //   router.push("/");
+    // } else {
+    //   alert(data.message);
+    // }
   };
 
   return (
@@ -61,6 +99,8 @@ export default function LoginPage() {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        
       </form>
 
       <p className="text-center mt-4">

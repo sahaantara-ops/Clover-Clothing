@@ -1,21 +1,26 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 const CartButton = ({ product }) => {
-  const isLogin = false;
+ 
   const router = useRouter();
-  const path = usePathname();
+  const pathname = usePathname();
+  const { data: session } = useSession();
 
-  const handleAddToCart = () => {
-    if (isLogin) {
-      alert(product._id);
+ const handleAddToCart = () => {
+   console.log("Session:", session);
+    if (!session) {
+      
+      router.push(`/auth/login?callbackUrl=${pathname}`);
     } else {
-      router.push(`/auth/login?redirect=${path}`);
+      
+      router.push(`/Products/${product._id}`);
     }
-    // You can integrate your cart logic here
   };
+
 
   return (
     <div>

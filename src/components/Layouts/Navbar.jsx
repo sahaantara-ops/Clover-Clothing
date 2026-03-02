@@ -3,6 +3,7 @@ import NavLink from '../Buttons/NavLink';
 import Logo from '../Logo/Logo';
 import Link from 'next/link';
 import { IoMdCart } from "react-icons/io";
+import AuthButtons from '../Buttons/AuthButtons';
 
 const Navbar = () => {
   const nav=<>
@@ -43,7 +44,7 @@ const Navbar = () => {
     <Link href={"/cart"} className='"btn btn-ghost"'>
     <IoMdCart />
     </Link>
-    <Link href={"/auth/login"} className="btn btn-ghost">Login</Link>
+    <AuthButtons></AuthButtons>
     
   </div>
 </div>

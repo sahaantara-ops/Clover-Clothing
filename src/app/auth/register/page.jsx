@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { postuser } from "@/Action/Server/auth";
+import { signIn } from "next-auth/react";  
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,7 +14,6 @@ export default function RegisterPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-
     const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
@@ -21,7 +21,6 @@ export default function RegisterPage() {
     };
 
     const result = await postuser(payload);
-
     setLoading(false);
 
     if (result?.success) {
@@ -39,44 +38,27 @@ export default function RegisterPage() {
       </h2>
 
       <form onSubmit={handleRegister} className="space-y-4">
-        <input
-          name="name"
-          type="text"
-          placeholder="Full Name"
-          className="w-full border p-3 rounded-lg"
-          required
-        />
+        <input name="name" type="text" placeholder="Full Name" className="w-full border p-3 rounded-lg" required />
+        <input name="email" type="email" placeholder="Email" className="w-full border p-3 rounded-lg" required />
+        <input name="password" type="password" placeholder="Password" className="w-full border p-3 rounded-lg" required />
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          className="w-full border p-3 rounded-lg"
-          required
-        />
-
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="w-full border p-3 rounded-lg"
-          required
-        />
-
-        <button
-          disabled={loading}
-          className="w-full bg-green-600 text-white py-3 rounded-lg"
-        >
+        <button disabled={loading} className="w-full bg-green-600 text-white py-3 rounded-lg">
           {loading ? "Creating..." : "Register"}
         </button>
       </form>
 
+      <div className="text-center mt-4">
+        <button
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+          className="bg-red-500 text-white px-6 py-3 rounded-lg"
+        >
+          Continue with Google
+        </button>
+      </div>
+
       <p className="text-center mt-4">
         Already have an account?{" "}
-        <span
-          onClick={() => router.push("/auth/login")}
-          className="text-black font-semibold cursor-pointer"
-        >
+        <span onClick={() => router.push("/auth/login")} className="text-black font-semibold cursor-pointer">
           Login
         </span>
       </p>

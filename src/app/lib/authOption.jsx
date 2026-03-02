@@ -1,3 +1,4 @@
+import CredentialsProvider from "next-auth/providers/credentials";
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -11,7 +12,8 @@ export const authOptions = {
     },
     async authorize(credentials, req) {
       console.log("Credentials received in authorize:", credentials);
-      return null
+      const user = await loginUser(cridentials);
+      return user;
     }
   })
   ],
