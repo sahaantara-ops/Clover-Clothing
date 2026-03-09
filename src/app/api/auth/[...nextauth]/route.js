@@ -1,13 +1,12 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { dbConnect, Collections } from "@/app/lib/dbConnect";
 import GoogleProvider from "next-auth/providers/google";
+import { dbConnect, Collection } from "@/app/lib/dbConnect";
 import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
   providers: [
-
-      GoogleProvider({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
@@ -15,73 +14,95 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials) {
-        const collection = await dbConnect(Collections.USER);
+        const collection = await dbConnect(Collection.USERS);
 
-        const user = await collection.findOne({
-          email: credentials.email,
-        });
+        const email = credentials.email.toLowerCase();
 
-        if (!user) {
-          throw new Error("User not found");
-        }
+        const user = await collection.findOne({ email });
+
+        if (!user) throw new Error("User not found");
 
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
 
-        if (!isValid) {
-          throw new Error("Invalid password");
-        }
+        if (!isValid) throw new Error("Invalid password");
 
         return {
           id: user._id.toString(),
-          email: user.email,
           name: user.name,
+          email: user.email,
+          role: user.role || "user",
         };
       },
     }),
   ],
 
-  pages: {
-    signIn: "/auth/login",
-    error: "/auth/login",
-  },
-
   session: {
     strategy: "jwt",
   },
 
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
+
   callbacks: {
-    // ✅ Save Google user to MongoDB if not exists
-    async signIn({ user, account }) {
-      if (account.provider === "google") {
-        const collection = await dbConnect(Collections.USER);
+
+  async signIn({ user, account }) {
+    try {
+
+      if (account?.provider === "google") {
+
+        const collection = await dbConnect(Collection.USERS);
 
         const existingUser = await collection.findOne({
-          email: user.email,
+          email: user.email.toLowerCase(),
         });
 
         if (!existingUser) {
           await collection.insertOne({
-            name: user.name,
-            email: user.email,
-            image: user.image,
             provider: "google",
+            name: user.name,
+            email: user.email.toLowerCase(),
+            image: user.image,
+            role: "user",
             createdAt: new Date(),
           });
         }
       }
+
       return true;
-    },
+
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   },
 
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user.id;
+    }
+    return token;
+  },
+
+  async session({ session, token }) {
+    if (session.user) {
+      session.user.id = token.id;
+    }
+    return session;
+  }
+
+},
+
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
-});  
+});
 
 export { handler as GET, handler as POST };

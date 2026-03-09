@@ -1,9 +1,9 @@
 // app/api/products/route.js
-import { dbConnect, Collections } from "@/app/lib/dbConnect";
+import { dbConnect, Collection } from "@/app/lib/dbConnect";
 
 export async function GET() {
   try {
-    const collection = await dbConnect(Collections.PRODUCTS);
+    const collection = await dbConnect(Collection.PRODUCTS);
     const products = await collection.find({}).toArray();
 
     return new Response(JSON.stringify(products), {

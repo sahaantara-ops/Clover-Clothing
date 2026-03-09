@@ -1,5 +1,5 @@
 // /app/api/auth/login/route.js
-import { dbConnect, Collections } from "@/app/lib/dbConnect";
+import { dbConnect, Collection } from "@/app/lib/dbConnect";
 import bcrypt from "bcryptjs";
 
 export async function POST(req) {
@@ -13,7 +13,7 @@ export async function POST(req) {
       );
     }
 
-    const collection = await dbConnect(Collections.USER);
+    const collection = await dbConnect(Collection.USER);
     const user = await collection.findOne({ email });
 
     if (!user) {

@@ -4,9 +4,9 @@ const uri = process.env.MONGODB_URI;
 const dbname = process.env.DBNAME;
 
 
-export const Collections = {
+export const Collection = {
   PRODUCTS: "products",
-  USER:"users",
+  USERS:"users",
 };
 
 let client;

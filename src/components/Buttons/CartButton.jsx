@@ -8,11 +8,13 @@ const CartButton = ({ product }) => {
  
   const router = useRouter();
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session,status } = useSession();
+  console.log(session);
+  console.log(status);
 
  const handleAddToCart = () => {
    console.log("Session:", session);
-    if (!session) {
+    if (status === "unauthenticated") {
       
       router.push(`/auth/login?callbackUrl=${pathname}`);
     } else {

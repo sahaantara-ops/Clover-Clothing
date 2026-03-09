@@ -1,6 +1,6 @@
 "use server";
 import collapse from "daisyui/components/collapse";
-import { Collections } from "../../app/lib/dbConnect";
+import { Collection } from "../../app/lib/dbConnect";
 import { dbConnect } from "../../app/lib/dbConnect";
 import bcrypt from "bcryptjs";
 
@@ -14,10 +14,10 @@ export const postuser = async (payload) => {
 
   try {
     // Get MongoDB collection
-    const collection = await dbConnect(Collections.USER);
+    const collection = await dbConnect(Collection.USERS);
 
     // Check if user already exists
-    const isExist = await collection.findOne({ email });
+    const isExist = await collection.findOne({  email: payload.email  });
     if (isExist) {
       return { success: false, message: "User already exists" };
     }
@@ -55,7 +55,7 @@ export const loginUser = async(payload)=>{
   const { email, password } = payload;
   if(!email || !password ) return null;
 
-  const user = await dbConnect(collection.USER).findOne({email});
+  const user = await dbConnect(Collection.USERS).findOne({ email: payload.email });
   if(!user) return null;
 
   const isMatched = await bcrypt.compare(password,user.password);

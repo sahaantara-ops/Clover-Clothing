@@ -1,34 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 import { postuser } from "@/Action/Server/auth";
 import { signIn } from "next-auth/react";  
+import SocialButton from "@/components/Buttons/SocialButton";
+import Swal from "sweetalert2";
 
 export default function RegisterPage() {
   const router = useRouter();
+   const params = useSearchParams(); 
   const [loading, setLoading] = useState(false);
+  const callBackUrl = params.get("callbackUrl") || "/";
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const payload = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
+    const name = formData.get("name");
+  const email = formData.get("email").toLowerCase();
+  const password = formData.get("password");
 
-    const result = await postuser(payload);
-    setLoading(false);
+  const payload = { name, email, password };
 
-    if (result?.success) {
-      alert("Successful. Please login.");
-      router.push("/auth/login");
-    } else {
-      alert("Registration failed or user already exists.");
-    }
+    const registerResult = await postuser(payload);
+    
+
+    if (registerResult ?.insertedId) {
+   
+    const result= await signIn("credentials", {
+      email,
+      password,
+      redirect:false,
+      callbackUrl: callBackUrl,
+    });
+    if(result.ok)
+    Swal.fire("success,Registered successfully");
+    router.push(callBackUrl);
+  } else {
+    Swal.fire("Registration failed or user already exists.");
+  }
+  setLoading(false);
   };
 
   return (
@@ -48,12 +61,8 @@ export default function RegisterPage() {
       </form>
 
       <div className="text-center mt-4">
-        <button
-          onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="bg-red-500 text-white px-6 py-3 rounded-lg"
-        >
-          Continue with Google
-        </button>
+        
+        <SocialButton></SocialButton>
       </div>
 
       <p className="text-center mt-4">

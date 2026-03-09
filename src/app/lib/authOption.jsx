@@ -1,20 +1,77 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-export const authOptions = {
+import GoogleProvider from "next-auth/providers/google";
+import { dbConnect,Collection } from "./dbConnect";
+import { loginUser } from "./loginUser"; 
+
+export const authOption = {
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
     
     name: 'Credentials',
    
-    credentials: {
-      username: { label: "Username", type: "text", placeholder: "jsmith" },
-      password: { label: "Password", type: "password" }
-    },
-    async authorize(credentials, req) {
+   credentials: {
+  email: { label: "Email", type: "email" },
+  password: { label: "Password", type: "password" }
+},
+    async authorize(credentials) {
       console.log("Credentials received in authorize:", credentials);
-      const user = await loginUser(cridentials);
+      const user = await loginUser(credentials);
       return user;
     }
-  })
+  }),
+  GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET
+})
   ],
+  callbacks: {
+  async signIn({ user, account, profile, email, credentials }) {
+    console.log({ user, account, profile, email, credentials });
+    
+    const isExist = await dbConnect(Collection.USERS).findOne({
+  email: user.email,
+  provider: account?.provider,
+});
+    if (isExist) {
+       return true;
+    }
+    
+
+  const newUser = {
+  provider: account?.provider,
+  name: user.name,
+  email: user.email,
+  image: user.image,
+  role: "user",
+};
+    const result=await dbConnect(Collection.USERS).insertOne(newUser);
+    return result.acknowledged;
+
+
+  
+    //return true
+  },
+  // async redirect({ url, baseUrl }) {
+  //   return baseUrl
+  // },
+  async session({ session, token }) {
+
+  
+  if (session?.user) {
+    session.user.role = token.role;
+    session.user.email = token.email;
+  }
+  return session;
+},
+   async jwt({ token, user,account}) {
+    console.log("account data in token",account)
+
+    if(user){
+    token.role = user.role || "user";
+    token.email=user.email;
+    }
+     return token
+   }
+}
 }
