@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import CartButton from "../Buttons/CartButton";
+import ViewDetails from "../Buttons/ViewDetails";
 
 const ProductCard = ({ product }) => {
   return (
@@ -20,6 +20,14 @@ const ProductCard = ({ product }) => {
             className="w-full h-72 object-cover group-hover:scale-105 transition duration-300 cursor-pointer"
           />
         </Link>
+
+        {/* View Details Button (Hidden until hover) */}
+        <div className="absolute inset-0 flex items-center justify-center 
+        bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300">
+
+          <ViewDetails product={{ ...product, id: product?._id.toString() }} />
+
+        </div>
       </figure>
 
       {/* Card Body */}
@@ -36,10 +44,8 @@ const ProductCard = ({ product }) => {
           <span className="font-bold text-primary">৳ {product.price}</span>
           <span className="text-sm opacity-60">{product.sold} sold</span>
         </div>
-
-       
-        <CartButton product={product} />
       </div>
+
     </div>
   );
 };

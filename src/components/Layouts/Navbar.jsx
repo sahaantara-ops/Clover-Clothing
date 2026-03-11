@@ -41,7 +41,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end space-x-4">
-    <Link href={"/cart"} className='"btn btn-ghost"'>
+    <Link href={"/Cart"} className='"btn btn-ghost"'>
     <IoMdCart />
     </Link>
     <AuthButtons></AuthButtons>

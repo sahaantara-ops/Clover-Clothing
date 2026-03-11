@@ -41,14 +41,14 @@ const Products = ({ limit }) => {
           ? Array(limit || 8)
               .fill(0)
               .map((_, index) => <ProductSkeleton key={index} />)
-          : displayedProducts.map((product) => (
+          : displayedProducts.map((products) => (
               <ProductCard
-                key={product.id}
+                key={products.id}
                 product={{
-                  ...product,
-                  id: product.id,
-                  image: product.image || "/placeholder.png",
-                  name: product.name || "Unnamed Product",
+                  ...products,
+                  id: products.id,
+                  image: products.image || "/placeholder.png",
+                  name: products.name || "Unnamed Product",
                 }}
               />
             ))}
