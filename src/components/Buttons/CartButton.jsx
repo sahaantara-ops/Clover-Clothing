@@ -16,33 +16,7 @@ const CartButton = ({ product }) => {
   console.log(status);
 
  const handleAddToCart = async () => {
-  Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, Remove it!"
-}).then(async(result) => {
-  if (result.isConfirmed) {
-    const result = await deleteItemsFromCart(_id);
-    if (result.success){
-          Swal.fire({
-      title: "Deleted!",
-      text: "Your file has been deleted.",
-      icon: "success"
-    }); 
-    }else{
-         Swal.fire({
-      title: "Oops! something error",
-      text: "Your file has been deleted.",
-      icon: "success"
-    });
-  
-  }
-}
-});
+ 
   setLoading(true);
 
   if (status === "unauthenticated") {

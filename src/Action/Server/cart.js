@@ -3,6 +3,8 @@
 import { authOption } from "@/app/lib/authOption";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
+import { cache, cacheSignal } from "react";
 
 const { dbConnect, Collection } = require("@/app/lib/dbConnect")
 
@@ -51,7 +53,7 @@ export const handleCart = async({product, inc = true}) =>{
     
 
 };
-export const getCart = async () =>{
+export const getCart = cache(async () =>{
     const {user} = (await getServerSession(authOption))|| {} ;
     if(!user) return [];
      
@@ -69,10 +71,11 @@ export const getCart = async () =>{
   }));
 
   return cart;
-};
+})
 export const deleteItemsFromCart = async(id)=>{
     
-    const {user} = await getServerSession(authOption)|| {} ;
+  const cartCollection = await dbConnect(Collection.CART);
+    const {user} = (await getServerSession(authOption))|| {} ;
     if(!user) return {success:false};
 
     if(id?.length !=24){
@@ -82,5 +85,53 @@ export const deleteItemsFromCart = async(id)=>{
     const query = {_id: new ObjectId(id)}
 
     const result = await  cartCollection.deleteOne(query);
+
+    // if(Boolean(result.deletedCount)){
+    //   revalidatePath("/cart")
+    // }
     return {success: Boolean(result.deletedCount)}
+};
+
+export const increaseItemDb = async(id,quantity)=>{
+  const {user} = (await getServerSession(authOption))|| {} ;
+    if(!user) return {success:false};
+
+    if(quantity>10){
+     return {
+        success:false, message: "You cannot bye 10 products at a time"
+      }
+    }
+     const cartCollection = await dbConnect(Collection.CART);
+    const query = {_id: new ObjectId(id)};
+    const updatedData = {
+        $inc:{
+            quantity: 1
+        }
+      }
+    const result = await  cartCollection.updateOne(query,updatedData);
+
+    return{success:Boolean(result.modifiedCount) }
+
+}
+
+export const decreaseItemDb = async(id,quantity)=>{
+  const {user} = (await getServerSession(authOption))|| {} ;
+    if(!user) return {success:false};
+
+    if(quantity <= 1){
+     return {
+        success:false, message: "quantity cannot be empty"
+      }
+    }
+     const cartCollection = await dbConnect(Collection.CART);
+    const query = {_id: new ObjectId(id)};
+    const updatedData = {
+        $inc:{
+            quantity: 1
+        }
+      }
+    const result = await  cartCollection.updateOne(query,updatedData);
+
+    return{success:Boolean(result.modifiedCount) }
+
 }

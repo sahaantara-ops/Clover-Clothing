@@ -1,0 +1,113 @@
+"use client";
+
+import React, { useState, useMemo } from "react";
+import CartItem from "../Card/CartItem";
+
+const Cart = ({ cartItems = [] }) => {
+  const [items, setItems] = useState(cartItems);
+
+  const totalItems = useMemo(
+    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    [items]
+  );
+
+  const totalPrice = useMemo(
+    () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [items]
+  );
+
+  const removeItem = (_id) => {
+    setItems((prevItems) => prevItems.filter((item) => item._id !== _id));
+  };
+
+  const updateQuantity = (id, q) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id === id ? { ...item, quantity: q } : item
+      )
+    );
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-4 gap-8">
+
+      {/* LEFT SIDE: Cart Items */}
+      <div className="lg:col-span-3 space-y-6">
+        {items.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border p-10 text-center">
+            <h3 className="text-xl font-semibold text-gray-700">
+              Your cart is empty
+            </h3>
+            <p className="text-gray-500 mt-2">
+              Start adding products to your cart.
+            </p>
+          </div>
+        ) : (
+          items.map((item) => (
+            <div
+              key={item._id.toString()}
+              className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-4"
+            >
+              <CartItem
+                item={{ ...item, _id: item._id.toString() }}
+                removeItem={removeItem}
+                updateQuantity={updateQuantity}
+              />
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* RIGHT SIDE: Order Summary Table */}
+      <div className="lg:col-span-1 bg-white border rounded-xl shadow-sm p-6 sticky top-24 h-fit">
+
+        <h3 className="text-xl font-semibold mb-4 text-gray-800">
+          Order Summary
+        </h3>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left border">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="p-3 border">Product</th>
+                <th className="p-3 border">Qty</th>
+                <th className="p-3 border">Price</th>
+                <th className="p-3 border">Total</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {items.map((item) => (
+                <tr key={item._id.toString()} className="hover:bg-gray-50">
+                  <td className="p-3 border font-medium">{item.name}</td>
+                  <td className="p-3 border">{item.quantity}</td>
+                  <td className="p-3 border">${item.price}</td>
+                  <td className="p-3 border font-semibold text-primary">
+                    ${item.price * item.quantity}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex justify-between mt-6 text-lg font-semibold">
+          <span>Total Items</span>
+          <span>{totalItems}</span>
+        </div>
+
+        <div className="flex justify-between mt-2 text-lg font-semibold">
+          <span>Total Price</span>
+          <span className="text-primary">${totalPrice}</span>
+        </div>
+
+        <button className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition">
+          Confirm Order
+        </button>
+
+      </div>
+    </div>
+  );
+};
+
+export default Cart;
