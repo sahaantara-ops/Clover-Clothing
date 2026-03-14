@@ -15,9 +15,9 @@ const CartPage = async () => {
 
       {/* Header */}
       <div className="mb-8 border-b pb-6">
-        <h2 className="text-4xl font-bold text-gray-800 border-l-4 border-green pl-4">
-  My Cart
-</h2>
+        <h2 className="text-4xl font-bold text-gray-800 border-l-4 border-primary pl-4">
+        My Cart
+       </h2>
 
        
   </div>

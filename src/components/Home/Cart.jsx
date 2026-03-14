@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import CartItem from "../Card/CartItem";
+import Link from "next/link";
 
 const Cart = ({ cartItems = [] }) => {
   const [items, setItems] = useState(cartItems);
@@ -29,7 +30,7 @@ const Cart = ({ cartItems = [] }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-4 gap-8">
+    <div className="max-w-7xl min-h-[80vh] mx-auto px-6 py-10 grid lg:grid-cols-4 gap-8">
 
       {/* LEFT SIDE: Cart Items */}
       <div className="lg:col-span-3 space-y-6">
@@ -59,7 +60,7 @@ const Cart = ({ cartItems = [] }) => {
       </div>
 
       {/* RIGHT SIDE: Order Summary Table */}
-      <div className="lg:col-span-1 bg-white border rounded-xl shadow-sm p-6 sticky top-24 h-fit">
+     <div className="lg:col-span-1 bg-white border rounded-xl shadow-sm p-6 sticky top-24 h-[600px]">
 
         <h3 className="text-xl font-semibold mb-4 text-gray-800">
           Order Summary
@@ -100,10 +101,12 @@ const Cart = ({ cartItems = [] }) => {
           <span>Total Price</span>
           <span className="text-primary">${totalPrice}</span>
         </div>
-
-        <button className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition">
-          Confirm Order
-        </button>
+<Link
+  href={"/CheckOut"}
+  className="block w-full mt-6 bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition text-center"
+>
+  Confirm Order
+</Link>
 
       </div>
     </div>

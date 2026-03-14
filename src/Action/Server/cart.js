@@ -3,55 +3,60 @@
 import { authOption } from "@/app/lib/authOption";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
-import { cache, cacheSignal } from "react";
+
+import { cache, } from "react";
 
 const { dbConnect, Collection } = require("@/app/lib/dbConnect")
 
 
 
+export const handleCart = async ({ productId }) => {
 
-export const handleCart = async({product, inc = true}) =>{
+  const { user } = await getServerSession(authOption) || {};
+  if (!user) return { success: false };
 
-    const {user} = await getServerSession(authOption)|| {} ;
-    if(!user) return {success:false};
-    const cartCollection =await dbConnect(Collection.CART);
+  const cartCollection = await dbConnect(Collection.CART);
 
-    const query = {email :user?.email, productId:product?._id}
+  const query = { email: user?.email, productId };
 
-//     const price = (product?.price) || 0;
-//  const discount = Number(product?.discount) || 0;
-//  const finalPrice = price - (price * discount) / 100;
+  const isAdded = await cartCollection.findOne(query);
 
-    const isAdded = await cartCollection.findOne(query);
-    if (isAdded){
-      
-      const updatedData = {
-        $inc:{
-            quantity: inc ?  1 : -1
-        }
-      }
-     
-     const result= await cartCollection.updateOne(query,updatedData)
-     return{success:Boolean(result.modifiedCount)}
-    }else{
-    const newData = {
-  productId: product?._id.toString(),
-  email: user?.email,
-  title: product.name,
-  quantity: 1,
-  image: product.image,
-  price:  product.price, 
-  username: user?.name,
-};
+  if (isAdded) {
 
-     const result = await cartCollection.insertOne(newData);
-     console.log(result);
-     return{success:result.acknowledged};
-     
+    const updatedData = {
+      $inc: { quantity: 1 }
+    };
+
+    const result = await cartCollection.updateOne(query, updatedData);
+
+    return { success: Boolean(result.modifiedCount) };
+
+  } else {
+
+    const productCollection = await dbConnect(Collection.PRODUCTS);
+
+    const product = await productCollection.findOne({
+      _id: new ObjectId(productId)
+    });
+
+    if (!product) {
+      return { success: false, message: "Product not found" };
     }
-    
 
+    const newData = {
+      productId: product._id.toString(),
+      email: user?.email,
+      title: product.name,
+      quantity: 1,
+      image: product.image,
+      price: product.price,
+      username: user?.name,
+    };
+
+    const result = await cartCollection.insertOne(newData);
+
+    return { success: result.acknowledged };
+  }
 };
 export const getCart = cache(async () =>{
     const {user} = (await getServerSession(authOption))|| {} ;
@@ -134,4 +139,13 @@ export const decreaseItemDb = async(id,quantity)=>{
 
     return{success:Boolean(result.modifiedCount) }
 
+};
+export const clearCart = async ()=>{
+   const {user} = (await getServerSession(authOption))|| {} ;
+    if(!user) return {success:false};
+     const query = {email:user?.email};
+     const cartCollection = await dbConnect(Collection.CART);
+    const result= await cartCollection.deleteMany(query);
+    return result;
+    
 }
