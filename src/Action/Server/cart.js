@@ -87,7 +87,7 @@ export const deleteItemsFromCart = async(id)=>{
         return {success:false};
     }
 
-    const query = {_id: new ObjectId(id)}
+    const query = {_id: new ObjectId(id), email: user?.email}
 
     const result = await  cartCollection.deleteOne(query);
 
@@ -101,13 +101,14 @@ export const increaseItemDb = async(id,quantity)=>{
   const {user} = (await getServerSession(authOption))|| {} ;
     if(!user) return {success:false};
 
-    if(quantity>10){
+    if(quantity>10){   
      return {
         success:false, message: "You cannot bye 10 products at a time"
       }
     }
      const cartCollection = await dbConnect(Collection.CART);
-    const query = {_id: new ObjectId(id)};
+    const query = {_id: new ObjectId(id), email: user?.email}
+
     const updatedData = {
         $inc:{
             quantity: 1
@@ -129,10 +130,11 @@ export const decreaseItemDb = async(id,quantity)=>{
       }
     }
      const cartCollection = await dbConnect(Collection.CART);
-    const query = {_id: new ObjectId(id)};
+     const query = {_id: new ObjectId(id), email: user?.email}
+
     const updatedData = {
         $inc:{
-            quantity: 1
+            quantity: -1
         }
       }
     const result = await  cartCollection.updateOne(query,updatedData);

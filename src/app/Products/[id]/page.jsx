@@ -4,9 +4,11 @@ import ViewDetails from "@/components/Buttons/ViewDetails";
 import Image from "next/image";
 import React from "react";
 
+import Link from "next/link";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
+  
   const product = await getSingleProduct(id);
 
   if (!product) {
@@ -37,6 +39,12 @@ export async function generateMetadata({ params }) {
       ? `Now available for ৳${discountPrice.toFixed(0)} (${discount}% OFF).`
       : `Available now for ৳${price}.`
   } Sold: ${sold} pieces. Order now!`;
+  
+   
+
+  if (!product) {
+    return <p>Product not found</p>;
+  }
 
   return {
     title: `${name} | Your Store Name`,
@@ -102,61 +110,60 @@ const ProductDetails = async ({ params }) => {
   
   
 
-  return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="grid md:grid-cols-2 gap-10 items-center">
-        
-        {/* Product Image */}
-        <div className="relative w-full h-[500px]">
-          <Image
-            src={products.image}
-            alt={products.name}
-            fill
-            className="object-cover rounded-xl shadow-lg"
-          />
-
-         
-        </div>
-
-        {/* Product Info */}
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{products.name}</h1>
-
-          <div className="flex items-center gap-4">
-            <span className="text-2xl font-bold text-green-600">
-              ৳{products.price}
-            </span>
-          </div>
-
-          <div className="space-y-2 text-gray-600">
-            <p>
-              <span className="font-semibold text-gray-800">
-                Cotton Type:
-              </span>{" "}
-              {products.cottonType}
-            </p>
-
-            <p>
-              <span className="font-semibold text-gray-800">
-                Sold:
-              </span>{" "}
-              {products.sold} pieces
-            </p>
-
-            <p>
-              <span className="font-semibold text-gray-800">
-                color:
-              </span>{""}
-              {products.color}
-            </p>
-
-          </div>
-
-          <CartButton product={{ ...products, id: products?._id.toString() }}></CartButton>
-        </div>
+ return (
+  <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
+    <div className="grid md:grid-cols-2 gap-10 items-center">
+      {/* Product Image */}
+      <div className="relative w-full h-[500px]">
+        <Image
+          src={products.image}
+          alt={products.name}
+          fill
+          className="object-cover rounded-xl shadow-lg"
+        />
       </div>
+
+      {/* Product Info */}
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold">{products.name}</h1>
+
+        <div className="flex items-center gap-4">
+          <span className="text-2xl font-bold text-green-600">৳{products.price}</span>
+        </div>
+
+        <div className="space-y-2 text-gray-600">
+          <p>
+            <span className="font-semibold text-gray-800">Cotton Type:</span> {products.cottonType}
+          </p>
+          <p>
+            <span className="font-semibold text-gray-800">Sold:</span> {products.sold} pieces
+          </p>
+          <p>
+            <span className="font-semibold text-gray-800">Color:</span> {products.color}
+          </p>
+        </div>
+
+        <CartButton product={{ ...products, id: products?._id.toString() }} />
+        {/* Dedicated Compare button */}
+  <div className="mt-4">
+    <Link href={`/compare/${products._id}`}>
+      <button className="bg-black text-white px-4 py-2 rounded-lg">
+        Compare
+      </button>
+    </Link>
+  </div>
+      </div>
+      <div>
+
+
+
+ 
+</div>
     </div>
-  );
-};
+
+   
+</div>
+);
+}
 
 export default ProductDetails;

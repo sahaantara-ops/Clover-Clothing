@@ -44,7 +44,9 @@ const ProductCard = ({ product }) => {
           <span className="font-bold text-primary">৳ {product.price}</span>
           <span className="text-sm opacity-60">{product.sold} sold</span>
         </div>
+
       </div>
+      
 
     </div>
   );

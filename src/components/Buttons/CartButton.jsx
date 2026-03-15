@@ -3,46 +3,85 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import { deleteItemsFromCart, handleCart } from "@/Action/Server/cart";
+import { handleCart } from "@/Action/Server/cart";
 import Swal from "sweetalert2";
 
 const CartButton = ({ product }) => {
- 
+
   const router = useRouter();
   const pathname = usePathname();
-  const [loading,setLoading] = useState();
+  const [loading,setLoading] = useState(false);
+  const [compareProducts,setCompareProducts] = useState([]);
+
   const { data: session,status } = useSession();
-  console.log(session);
-  console.log(status);
 
- const handleAddToCart = async () => {
- 
-  setLoading(true);
+  const handleAddToCart = async () => {
 
-  if (status === "unauthenticated") {
-    router.push(`/auth/login?callbackUrl=${pathname}`);
-    return;
-  }
+    setLoading(true);
 
-  const result = await handleCart({ productId: product._id });
+    if (status === "unauthenticated") {
+      router.push(`/auth/login?callbackUrl=${pathname}`);
+      return;
+    }
 
-  if (result?.success) {
-    Swal.fire("Added to cart successfully", product?.name, "success");
-  } else {
-    Swal.fire("Oops!! Something went wrong", product?.name, "error");
-  }
-  setLoading(false);
-};
+    const result = await handleCart({ productId: product._id });
 
+    if (result?.success) {
+
+      Swal.fire("Added to cart successfully", product?.name, "success");
+
+      // 🔹 fetch similar products
+      const res = await fetch(
+        `/api/products/compare?cottonType=${product.cottonType}&id=${product._id}`
+      );
+
+      const data = await res.json();
+
+      setCompareProducts(data);
+
+    } else {
+      Swal.fire("Oops!! Something went wrong", product?.name, "error");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <div>
+
       <button
         onClick={handleAddToCart}
         className="mt-6 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition duration-300 shadow-md"
       >
-        Add to Cart
+        {loading ? "Adding..." : "Add to Cart"}
       </button>
+
+      {/* Show similar products */}
+      {compareProducts.length > 0 && (
+        <div className="mt-10">
+
+          <h2 className="text-xl font-bold mb-4">
+            Similar Fabric Products
+          </h2>
+
+          <div className="grid grid-cols-3 gap-4">
+
+            {compareProducts.map((item) => (
+              <div key={item._id} className="border p-4 rounded">
+
+                <h3 className="font-semibold">{item.name}</h3>
+                <p>Brand: {item.brand}</p>
+                <p>Price: ৳{item.price}</p>
+                <p>Cotton: {item.cottonType}</p>
+
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 };
