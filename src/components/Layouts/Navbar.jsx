@@ -70,11 +70,11 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              href="/Cart"
+              href="/my-account/orders"
               className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 transition rounded-lg"
             >
               <IoMdCart className="h-5 w-5 text-gray-500" />
-              MyCart
+              MyOrder
             </Link>
           </li>
           <li>

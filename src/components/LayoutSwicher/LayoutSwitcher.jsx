@@ -19,7 +19,7 @@ const LayoutSwitcher = ({ layout, setLayout }) => {
           onClick={() => setLayout(option.value)}
           className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors text-xl ${
             layout === option.value
-              ? "bg-blue-500 text-white"
+              ? " text-white"
               : "bg-gray-200 text-gray-600"
           }`}
           title={`Layout: ${option.value}`} // hover tooltip

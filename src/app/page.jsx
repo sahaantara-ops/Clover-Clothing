@@ -4,14 +4,14 @@ import Products from "@/components/Home/Products";
 import Brands from "@/components/Brands/Brands";
 import TopCategoriesSection from "@/components/TopCategories/TopCategories";
 import { getServerSession } from "next-auth";
-import Test from "../components/Test";
+
 import { authOption } from "./lib/authOption";
 
 export default async function Home() {
   const session= await getServerSession(authOption);
   return (
     <div className="space-y-20">
-      <Test></Test>
+     
       
       <section>
         <Banner></Banner>
