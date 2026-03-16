@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <div className="space-y-20">
       <Test></Test>
-      <p>{JSON.stringify(session)}</p>
+      
       <section>
         <Banner></Banner>
       </section>

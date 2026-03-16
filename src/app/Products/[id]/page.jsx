@@ -154,11 +154,7 @@ const ProductDetails = async ({ params }) => {
   </div>
       </div>
       <div>
-
-
-
- 
-</div>
+   </div>
     </div>
 
    

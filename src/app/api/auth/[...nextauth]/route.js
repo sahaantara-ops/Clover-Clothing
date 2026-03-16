@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { dbConnect, Collection } from "@/app/lib/dbConnect";
 import bcrypt from "bcryptjs";
 
-const handler = NextAuth({
+export const authOptions = {   
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -54,55 +54,52 @@ const handler = NextAuth({
   },
 
   callbacks: {
+    async signIn({ user, account }) {
+      try {
+        if (account?.provider === "google") {
+          const collection = await dbConnect(Collection.USERS);
 
-  async signIn({ user, account }) {
-    try {
-
-      if (account?.provider === "google") {
-
-        const collection = await dbConnect(Collection.USERS);
-
-        const existingUser = await collection.findOne({
-          email: user.email.toLowerCase(),
-        });
-
-        if (!existingUser) {
-          await collection.insertOne({
-            provider: "google",
-            name: user.name,
+          const existingUser = await collection.findOne({
             email: user.email.toLowerCase(),
-            image: user.image,
-            role: "user",
-            createdAt: new Date(),
           });
+
+          if (!existingUser) {
+            await collection.insertOne({
+              provider: "google",
+              name: user.name,
+              email: user.email.toLowerCase(),
+              image: user.image,
+              role: "user",
+              createdAt: new Date(),
+            });
+          }
         }
+
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
       }
+    },
 
-      return true;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
 
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id;
+      }
+      return session;
+    },
   },
-
-  async jwt({ token, user }) {
-    if (user) {
-      token.id = user.id;
-    }
-    return token;
-  },
-
-  async session({ session, token }) {
-    if (session.user) {
-      session.user.id = token.id;
-    }
-    return session;
-  }
-
-},
 
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

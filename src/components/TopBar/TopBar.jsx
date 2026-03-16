@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from "next/link";
+
 
 const TopBar = () => {
     return (
@@ -24,7 +26,12 @@ const TopBar = () => {
 
         <span className='text-black'>Need help?</span>
 
-        <button className="hover:text-green-600 transition text-black">My Account</button>
+       
+<Link href="/my-account">
+  <button className="px-4 py-2 bg-black text-white rounded">
+    My Account
+  </button>
+</Link>
 
       </div>
      
