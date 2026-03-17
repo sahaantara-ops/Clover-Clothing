@@ -30,12 +30,15 @@ export const createOrder = async (payload) => {
   const orderCollection = await dbConnect(Collection.ORDER);
 
   const newOrder = {
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
     items: cart,
     user,
+    email: user.email,
     ...payload
   };
 
+  if (!user?.email) return { success: false };
+  console.log(await orderCollection.find({}).toArray());
   // insert order
   const result = await orderCollection.insertOne(newOrder);
 

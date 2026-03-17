@@ -12,8 +12,15 @@ export default async function MyOrdersPage() {
   const collection = await dbConnect(Collection.ORDER);
 
   const orders = await collection
-    .find({ email: session.user.email })
+    .find({ "user.email": session.user.email })
+    .sort({ createdAt: -1 })
     .toArray();
+
+    const serializedOrders = orders.map((order) => ({
+  ...order,
+  _id: order._id.toString(), // ✅ fix ObjectId
+  createdAt: order.createdAt?.toString(), // ✅ fix Date
+}));
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -21,9 +28,9 @@ export default async function MyOrdersPage() {
 
       {orders.length === 0 && <p>No orders found</p>}
 
-      {orders.map((order) => (
-        <OrderCard key={order._id} order={order} />
-      ))}
+     {serializedOrders.map((order) => (
+  <OrderCard key={order._id} order={order} />
+))}
     </div>
   );
 }

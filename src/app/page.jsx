@@ -10,7 +10,7 @@ import { authOption } from "./lib/authOption";
 export default async function Home() {
   const session= await getServerSession(authOption);
   return (
-    <div className="space-y-20">
+    <div className="space-y-30">
      
       
       <section>
