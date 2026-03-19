@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
 
             <header className="md:w-full mx-auto">
               <TopBar />
-              <Navbar />
+              <Navbar />z
             </header>
 
             <main className="w-full px-5 py-2 min-h-[calc(100vh-330px)]">

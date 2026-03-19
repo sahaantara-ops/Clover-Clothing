@@ -5,10 +5,10 @@ import Brands from "@/components/Brands/Brands";
 import TopCategoriesSection from "@/components/TopCategories/TopCategories";
 import { getServerSession } from "next-auth";
 
-import { authOption } from "./lib/authOption";
+import { authOptions } from "../app/lib/authoptions";
 
 export default async function Home() {
-  const session= await getServerSession(authOption);
+  const session= await getServerSession(authOptions);
   return (
     <div className="space-y-30">
      

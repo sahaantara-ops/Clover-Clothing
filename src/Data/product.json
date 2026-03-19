@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "69a062ecace0cd527b4a29bc",
+    "id": 17,
+    "name": "Mustard Trendy Punjabi",
+    "image": "https://images.pexels.com/photos/1043473/pexels-photo-1043473.jpeg",
+    "cottonType": "Soft Cotton",
+    "brand": "Yellow",
+    "size": "XL",
+    "color": "Mustard",
+    "price": 1750,
+    "sold": 84
+  },
+  {
+    "_id": "69a062ecace0cd527b4a29bd",
+    "id": 18,
+    "name": "Charcoal Modern Punjabi",
+    "image": "https://images.pexels.com/photos/936232/pexels-photo-936232.jpeg",
+    "cottonType": "Premium Cotton",
+    "brand": "Ecstasy",
+    "size": "L",
+    "color": "Charcoal",
+    "price": 2050,
+    "sold": 49
+  },
+  {
+    "_id": "69a062ecace0cd527b4a29be",
+    "id": 19,
+    "name": "Light Pink Punjabi",
+    "image": "https://images.pexels.com/photos/1704486/pexels-photo-1704486.jpeg",
+    "cottonType": "Light Cotton",
+    "brand": "Easy",
+    "size": "M",
+    "color": "Pink",
+    "price": 1500,
+    "sold": 103
+  },
+  {
+    "_id": "69a062ecace0cd527b4a29bf",
+    "id": 20,
+    "name": "Classic Off-White Punjabi",
+    "image": "https://images.pexels.com/photos/428342/pexels-photo-428342.jpeg",
+    "cottonType": "Premium Cotton",
+    "brand": "Aarong",
+    "size": "XL",
+    "color": "Off-White",
+    "price": 2200,
+    "sold": 77
+  }
+]

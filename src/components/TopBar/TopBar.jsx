@@ -24,7 +24,23 @@ const TopBar = () => {
           BDT
         </button>
 
-        <span className='text-black'>Need help?</span>
+        <Link href="/help">
+       <button className="hover:text-green-600 transition text-black">
+        Need help?
+      </button>
+     </Link>
+
+     <Link href="/admin/help">
+       <button className="hover:text-green-600 transition text-black">
+        Answer?
+      </button>
+     </Link>
+
+     <Link href="/help/qn/a">
+       <button className="hover:text-green-600 transition text-black">
+        QN/A
+      </button>
+     </Link>
 
        
 <Link href="/my-account">
